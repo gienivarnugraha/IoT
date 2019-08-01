@@ -17,13 +17,9 @@
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
     "popper.js": "^1.15.0",
-    "pusher-js": "^5.0.0",
-    "vee-validate": "^2.2.13",
     "vue": "^2.5.11",
     "vue-chartjs": "^3.4.2",
     "vue-router": "^3.0.7",
-    "vue-socket-io": "^0.3.2",
-    "vuetify": "^2.0.2",
     "vuex": "^3.1.1"
   },
   "browserslist": [

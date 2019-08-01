@@ -1,32 +1,20 @@
 # codeigniter-3.2.1-with-admin-LTE-Template-Intigration
 ## Admin LTE templete with php codeigniter 3.2.1 latest version intigration
 
-Download the code from repository. Unzip the zip file. 
-
-Open browser; goto localhost/phpmyadmin. 
-Import the file "db.sql" in that database. 
-
-Change database.php in application/config/database.php with your own database details that created previously by importing db.sql
-
-Copy the remaining code into your root directory Open browser; goto localhost/[project-folder-name] and press enter
-
-The login screen will appear. 
-## To login, 
-I am going to provide the user-email ids and password below. 
+### import the database
+  * import cias.sql to your mysql server
 
 ### System Administrator Account : 
-  * email : admin@bewithdhanu.in 
+  * email : admin@admin.com 
   * password : 123456 
 
-### Manager Account : 
-  * email : manager@bewithdhanu.in 
-  * password : 123456 
+### change base URL of the rest server Main.js file in view/src/main.js
+  * axios.defaults.baseURL = 'http://localhost:8080/iot/' Change to your local host
 
-### Employee Account 
-  * email : employee@bewithdhanu.in 
-  * password : 123456 
-
-Once you logged in with System Administrator account, you can create user or edit previous user if you want.
+### install the node packages, then run the development server
+  * cd view
+  * npm install
+  * npm run dev
 
 ## Dependencies
 | NAME | VERSION | WEB | REPO |
