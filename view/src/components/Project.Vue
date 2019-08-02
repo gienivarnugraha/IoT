@@ -6,14 +6,14 @@
             </div>
         </div>
         <div class="row">
-                <table class="table table-hover table-bordered">
+                <table  v-for="(item) in items" :key="item.projectId" class="table table-hover table-bordered">
                     <div class="container-loading" v-if="loading" >
                         <div class="lds-hourglass"></div>
                     </div>
                     <thead>
                         <tr>
                             <th>Project Name</th>
-                            <th>Project Id</th>
+                            <th>API key</th>
                             <th>Sensor 1</th>
                             <th>Sensor 2</th>
                             <th>Sensor 3</th>
@@ -22,9 +22,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="(item) in items" :key="item.projectId">
+                        <tr>
                             <td>{{item.projectName}}</td>
-                            <td>{{item.projectId}}</td>
+                            <td>{{item.apiKey}}</td>
                             <td>{{item.sensor1Name}}</td>
                             <td>{{item.sensor2Name}}</td>
                             <td>{{item.sensor3Name}}</td>
@@ -32,9 +32,9 @@
                             <td>
                                 <button type="button" class="btn btn-outline-success">Update</button>
                                 <button type="button" class="btn btn-outline-success" @click="deleteProjects(item.projectId)">Delete</button>
-                            <td/>
-                            <tr >
-                                <td v-if="loaded" colspan=2>Values</td>
+                            </td>
+                            <tr v-if="loaded">
+                                <td colspan=2>Values</td>
                                 <td v-for="(value) in values" :key="value.sensorId">{{value}}</td>
                             </tr>
                         </tr>
@@ -163,6 +163,7 @@ export default {
             return new Promise((resolve, reject)=>{
                 axios.get('/project')
                 .then(response => {
+                    console.log(response)
                     this.loading=false
                     this.items = response.data.items
                     this.sensorId = response.data.items[0].sensorId

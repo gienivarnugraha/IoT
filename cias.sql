@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 01, 2019 at 05:22 PM
+-- Generation Time: Aug 02, 2019 at 03:20 PM
 -- Server version: 10.1.29-MariaDB
 -- PHP Version: 7.2.0
 
@@ -84,7 +84,7 @@ CREATE TABLE `tbl_project` (
 --
 
 INSERT INTO `tbl_project` (`projectId`, `userId`, `projectName`, `projectDesc`, `apiKey`, `sensorId`, `sensor1Name`, `sensor2Name`, `sensor3Name`, `sensor4Name`, `updateDate`, `createDate`) VALUES
-('id_5d3712f22d648', '1', 'vnbvbnvn', 'dsasdasdsa', 'gw00kk0c0s8g80cs480gwg4wo04sk4ss', 'id_5d3712f22d644', 'asd', 'none', 'none', 'none', '2019-07-28 23:02:36', '2019-07-23 21:00:18');
+('id_5d3712f22d648', '1', 'vnbvbnvn', 'dsasdasdsa', 'gw00kk0c0s8g80cs480gwg4wo04sk4ss', 'id_5d3718f8422d6', 'asd', 'none', 'none', 'none', '2019-08-02 14:24:25', '2019-07-23 21:00:18');
 
 -- --------------------------------------------------------
 
@@ -136,7 +136,8 @@ INSERT INTO `tbl_sensor` (`sensorId`, `sensor1Value`, `sensor2Value`, `sensor3Va
 ('id_5d3718f8422d6', 70, 70, 70, 70, '2019-07-31 15:54:35'),
 ('id_5d3718f8422d6', 300, 300, 300, 300, '2019-07-31 15:58:06'),
 ('id_5d3718f8422d6', 10, 10, 10, 10, '2019-07-31 16:00:46'),
-('id_5d3718f8422d6', 100, 200, 300, 400, '2019-08-01 07:23:45');
+('id_5d3718f8422d6', 100, 200, 300, 400, '2019-08-01 07:23:45'),
+('id_5d3718f8422d6', 24, 85, 35, 56, '2019-08-02 13:03:24');
 
 -- --------------------------------------------------------
 
@@ -163,7 +164,7 @@ CREATE TABLE `tbl_users` (
 --
 
 INSERT INTO `tbl_users` (`userId`, `email`, `password`, `name`, `mobile`, `roleId`, `api_key`, `createdBy`, `createdDtm`, `updatedBy`, `updatedDtm`) VALUES
-('0zx', 'admin@admin.com', '$2y$10$SAvFim22ptA9gHVORtIaru1dn9rhgerJlJCPxRNA02MjQaJnkxawq', 'nivar', NULL, 1, 'g04owk0oo4coogw8ocoswswww4kkg4kwc8wosw0o', 1, '2019-07-22 21:33:37', 1, '2019-08-01 19:30:04');
+('1', 'admin@admin.com', '$2y$10$SAvFim22ptA9gHVORtIaru1dn9rhgerJlJCPxRNA02MjQaJnkxawq', 'nivar', NULL, 1, 's4gw8ocokosog8o44kcwcs0sks8og8w4o40sckg8', 1, '2019-07-22 21:33:37', 1, '2019-08-02 10:23:37');
 
 -- --------------------------------------------------------
 

@@ -40,7 +40,8 @@ class Project_model extends CI_Model
             $this->db->where('projectId', $projectId);
         } else {
             $this->db->select('
-                                projectId,
+                                apiKey,
+                                projectId, 
                                 projectName, 
                                 projectDesc,
                                 sensorId, 
