@@ -8,11 +8,8 @@ import App from './App.vue'
 import axios from 'axios'
 import store from './vuex/store'
 import router from './router'
-import bus from './lib/eventBus'
 
 Vue.config.productionTip = false
-
-Vue.prototype.$bus = bus
 
 window.axios = axios
 

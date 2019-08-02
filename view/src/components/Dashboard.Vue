@@ -37,7 +37,7 @@
 import InputView from './widgets/inputView'
 import Chart from './widgets/Chart'
 import {dateToMin, dateToHour, dateToDay, dateBeautify, groupData, removeDuplicate} from '../lib/Date'
-import {mapActions} from 'vuex'
+import {mapActions, mapGetters} from 'vuex'
 
 export default {
     name: 'Dashboard',
@@ -61,7 +61,7 @@ export default {
             loaded:false,
             timeOut:setInterval(this.fillData,5000),
             sensorName:[],
-            sensorId:''
+            //sensorId:''
         }
     }, 
     beforeRouteLeave (to, from, next) {
@@ -74,11 +74,11 @@ export default {
         //this.loading=true
     },
     mounted() {
-        this.fetchProjects()
+        this.fetchProjects().then(response=>{this.sensorName = response.data.items[0]})
     },
     methods: {
         ...mapActions([
-            'loading'
+            'fetchProjects'
         ]),
         changeFormat(param){
             if (param == 1){
@@ -91,26 +91,9 @@ export default {
                 return this.format = dateToDay
             }
         },
-        fetchProjects() {
-            return new Promise((resolve, reject)=>{
-                axios.get('/project')
-                .then(response => {
-                    console.log(response)
-                    this.items = response.data.items
-                    this.sensorId = response.data.items[0].sensorId
-                    this.sensorName = response.data.items[0]
-                    
-                    resolve(response)
-                })
-                .catch(error => {
-                    console.log(error)
-                    reject(error)
-                })
-            })
-        },
         fillData () {
             return new Promise((resolve,reject)=>{
-                axios.get('/dashboard/id/'+this.sensorId)
+                axios.get('/dashboard/id/'+this.$store.state.sensorId)
                     .then(response => {
                         this.loading=false
                         console.log(response)

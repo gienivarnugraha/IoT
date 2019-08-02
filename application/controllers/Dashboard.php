@@ -32,7 +32,6 @@ class Dashboard extends Api
     function index_get()
     {
         $id = $this->uri->segment(3, 0);
-        
         $sensors = $this->sensor_model->getSensors($id);
         // Check if the users data store contains users (in case the database result returns NULL)
         if (count($sensors) > 0) {

@@ -68,30 +68,29 @@ export default {
             },
         }
     },
-/*     created() {
-        this.fetchAccessToken();
-    }, */
     computed: {
         ...mapState([
-            'loading',
             'loginError',
         ])
     },
     methods: {
         ...mapActions([
+            'loading',
             'doLogin',
+            'fetchProjects',
         ]),
         loginSubmit() {
+            this.loading(true)
             var formdata = new Form(this.form)
             this.doLogin(formdata.data())
                 .then(()=>{
+                    this.loading(false)
                     this.$router.push('/')
+                    this.fetchProjects()
                 })
-            //this.$store.dispatch('doLogin', {email:this.email, password:this.password}) //{email:this.email, password:this.password}
-        },
-        isValid(){
-            console.log(this.form.errors.has())
-            console.log(this.form.errors.get())
+                .catch((error)=>{
+                    console.log(error)
+                })
         }
     },
 }

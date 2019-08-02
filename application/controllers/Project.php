@@ -35,7 +35,7 @@ class Project extends Api
         $userId = $this->global['userId'] ;
         // If the id parameter doesn't exist return all the users
 
-        if (isset($id)) {
+        if ($projectId!=0) {
             $project = $this->project_model->projectList($userId,$projectId);
         } else {
             //$project = $this->project_model->projectList($id);
