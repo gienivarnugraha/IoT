@@ -140,11 +140,8 @@ export default {
             timeout: setInterval(this.fetchValues,5000)
         }
     },
-    beforeRouteLeave (to, from, next) {
+    beforeDestroy() {
         clearInterval(this.timeout)
-        clearInterval(this.timeout)
-        clearInterval(this.timeout)
-        next()
     },
     mounted() {
         this.fetchProjects()
@@ -238,6 +235,7 @@ export default {
             return new Promise((resolve, reject)=>{
                 axios.get('/sensor/id/'+this.sensorId)
                 .then(response => {
+                    console.log(response)
                     this.values = response.data.items
                     resolve(response)
                 })

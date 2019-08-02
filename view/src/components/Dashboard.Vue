@@ -64,11 +64,8 @@ export default {
             //sensorId:''
         }
     }, 
-    beforeRouteLeave (to, from, next) {
+    beforeDestroy() {
         clearInterval(this.timeOut)
-        clearInterval(this.timeOut)
-        clearInterval(this.timeOut)
-        next()
     },
     beforeMount() {
         //this.loading=true
