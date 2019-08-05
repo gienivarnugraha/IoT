@@ -44,7 +44,7 @@ class Project_model extends CI_Model
         $this->db->insert('tbl_project', $project);
         $this->db->trans_complete();
 
-        return true;
+        return $this->db->trans_status();
     }
     
     /**

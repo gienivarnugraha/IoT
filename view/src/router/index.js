@@ -23,9 +23,6 @@ function requireAuth(to, from, next) {
 function reload(to, from, next) {
   location.reload()
 }
-function stopLoop(to, from){
-
-}
 
 export default new Router({
     mode: 'history',
@@ -37,22 +34,29 @@ export default new Router({
         component: Login
       },
       {
-          path: '/',
-          name: 'dashboard',
-          component: Dashboard,
-          // beforeEnter: requireAuth
+        path: '/dashboard',
+        name: 'dashboard',
+        component: Dashboard,
+        //beforeEnter: requireAuth
       },
       {
-          path: '/project',
-          name: 'project',
-          component: Project,
-          // beforeEnter: requireAuth
+        path: '/project',
+        name: 'project',
+        component: Project,
+        //beforeEnter: requireAuth
+      },
+      {
+        path: '/',
+        name: 'project',
+        component: Project,
+        //beforeEnter: requireAuth
       },
       {
         path: '*',
-        name: '/dashboard',
-        component: Dashboard
+        name: 'Login',
+        component: Login
       }
+
     ],
     linkActiveClass: 'active'
 })

@@ -7,6 +7,9 @@
         <div class="container-loading" v-if="loading" >
             <div class="lds-hourglass"></div>
         </div>
+        <div class="row" v-if="errors && errors.length>0" >
+            <h4> {{errors}} </h4>
+        </div>
         <div class="row">
                 <table  class="table table-hover table-borderless">
                     <thead class="thead-dark">
@@ -234,40 +237,44 @@ export default {
         clearInterval(this.timeout)
     },
     mounted() {
-        this.fetchProjects().then(response=>{
-            console.log(response)
-            this.loading=false
-            if(response.data.items!=0 && response.data.count!=0 ){
-                this.items = response.data.items
-                this.sensorId = response.data.items[0].sensorId
-
-                this.form.projectId=response.data.items[0].projectId,
-                this.form.projectName=response.data.items[0].projectName,
-                this.form.projectDesc=response.data.items[0].projectDesc,
-                this.form.sensor1Name=response.data.items[0].sensor1Name,
-                this.form.sensor2Name=response.data.items[0].sensor2Name,
-                this.form.sensor3Name=response.data.items[0].sensor3Name,
-                this.form.sensor4Name=response.data.items[0].sensor4Name
-            }
-            else {
-                this.items=0
-                this.form.projectName='',
-                this.form.projectDesc='',
-                this.form.sensor1Name='',
-                this.form.sensor2Name='',
-                this.form.sensor3Name='',
-                this.form.sensor4Name=''
-            }
-            this.loaded=true
-        }).catch(error=>{
-            console.log(error)
-        })
+        this.errors = this.$store.getters.errors
+        this.fetch()
     },
     methods: {
         ...mapActions([
             'loading',
             'fetchProjects'
         ]),
+        fetch(){
+            this.loading=true
+            this.fetchProjects().then(response=>{
+                this.loading=false
+                if(response.data.items!=0 && response.data.count!=0 ){
+                    this.items = response.data.items
+                    this.sensorId = response.data.items[0].sensorId
+
+                    this.form.projectId=response.data.items[0].projectId,
+                    this.form.projectName=response.data.items[0].projectName,
+                    this.form.projectDesc=response.data.items[0].projectDesc,
+                    this.form.sensor1Name=response.data.items[0].sensor1Name,
+                    this.form.sensor2Name=response.data.items[0].sensor2Name,
+                    this.form.sensor3Name=response.data.items[0].sensor3Name,
+                    this.form.sensor4Name=response.data.items[0].sensor4Name
+                }
+                else {
+                    this.items=0
+                    this.form.projectName='',
+                    this.form.projectDesc='',
+                    this.form.sensor1Name='',
+                    this.form.sensor2Name='',
+                    this.form.sensor3Name='',
+                    this.form.sensor4Name=''
+                }
+                this.loaded=true
+            }).catch(error=>{
+                console.log(error)
+            })
+        },
         modals(select){
             if (select=="edit"){
                 this.editModal=true
@@ -282,7 +289,7 @@ export default {
                 .then(response => {
                     this.loading=false
                     this.editModal=false
-                    this.fetchProjects()
+                    this.fetch()
                     console.log(response)
                     resolve(response)
                 })
@@ -311,7 +318,7 @@ export default {
                 .then(response => {
                     this.loading=false
                     this.addModal=false
-                    this.fetchProjects()
+                    this.fetch()
                     console.log(response)
                     resolve(response)
                 })
@@ -346,7 +353,7 @@ export default {
                 axios.delete('/project/id/'+id)
                 .then(response => {
                     this.loading=false
-                    this.fetchProjects()
+                    this.fetch()
                     console.log(response)
                     resolve(response)
                 })

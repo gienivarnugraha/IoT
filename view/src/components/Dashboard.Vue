@@ -30,6 +30,7 @@
             </div>
             
             <div v-else class="row">
+                {{errors}}
                 <p> No sensor value were found on database </p>
             </div>
 
@@ -67,6 +68,7 @@ export default {
             timeOut:setInterval(this.fillData,5000),
             sensorName:[],
             loading:false,
+            errors:null
         }
     }, 
     beforeDestroy() {
@@ -76,7 +78,12 @@ export default {
         this.loading=true
     },
     mounted() {
-        this.fetchProjects().then(response=>{this.sensorName = response.data.items[0]})
+        this.fetchProjects().then(response=>{
+                console.log(response)
+                this.sensorName = response.data.items[0]
+            }).catch(error=>{
+                this.errors= this.$store.getters.errors
+            })
     },
     methods: {
         ...mapActions([
@@ -155,6 +162,7 @@ export default {
                         this.loaded=true
                     })
                     .catch(error => {
+                        this.loading=false
                         console.log(error)
                     })
             })

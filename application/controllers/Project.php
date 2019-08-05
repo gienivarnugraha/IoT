@@ -45,7 +45,6 @@ class Project extends Api
         if (count($project) > 0) {
             // Set the response and exit
             return $this->response([
-                'status' => 200,
                 'columns' => array_keys($project[0]),
                 'items' => $project,
                 'count' => count($project),
@@ -53,7 +52,6 @@ class Project extends Api
         } else {
             // Set the response and exit
             return $this->response([
-                'status' => false,
                 'items' => 0,
                 'message' => 'No project were found, please add one.'
             ], 200); // NOT_FOUND (404) being the HTTP response code
@@ -112,8 +110,6 @@ class Project extends Api
         $id = $this->put('projectId');
         $project = $this->put();
         $userId = $this->global['userId'] ;
-
-        var_dump($project);
 
         if ($id == null) {
             $message = [

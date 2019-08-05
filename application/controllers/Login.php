@@ -113,18 +113,6 @@ class Login extends BaseController
 
 
 
-    
-    /* Helper Methods */
-
-    private function _generate_key()
-    {
-        // Generate a random salt
-        $salt = base_convert(bin2hex($this->security->get_random_bytes(64)), 16, 36);
-
-        $new_key = substr($salt, 0, 40);
-        
-        return $new_key;
-    }
 
 }
 

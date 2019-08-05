@@ -46,6 +46,7 @@ $route['404_override'] = '';
 
 $route['login'] = 'login/login';
 $route['logout'] = 'login/logout';
+$route['register'] = 'user/addNewUser';
 /* 
 $route['dashboard'] = 'user';
 $route['userListing'] = 'user/userListing';

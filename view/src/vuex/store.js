@@ -16,6 +16,7 @@ export default new Vuex.Store({
     },
     sensorId: localStorage.sensorId,
     loading: false,
+    errors:null,
     loginError: null,
   },
 
@@ -42,6 +43,9 @@ export default new Vuex.Store({
     },
     getSensorId: (state, id )=> {
       state.sensorId = localStorage.setItem('sensorId', id)
+    },
+    error: (state, errorMessage )=> {
+      state.errors = errorMessage
     }
   },
 
@@ -69,13 +73,27 @@ export default new Vuex.Store({
       return new Promise((resolve, reject)=>{
         axios.get('/project')
         .then(response => {
-            if (localStorage.sensorId==null){
-              commit('getSensorId', response.data.items[0].sensorId)
+          console.log(response)
+            if(response.data.items==0){
+              commit('error', response.data.message)
             } else {
-              resolve(response)
+              if (localStorage.sensorId==null){
+                commit('getSensorId', response.data.items[0].sensorId)
+              } else {
+                commit('getSensorId', localStorage.getItem('sensorId'))
+              }
             }
+            resolve(response)
           })
           .catch(error => {
+            if (error.response) {
+                commit('error', error.response.data)
+              } else if (error.request) {
+                commit('error', error.request)
+              } else {
+                commit('error', error.message)
+            }
+            console.log(error)
             reject(error)
           })
         })
@@ -98,6 +116,7 @@ export default new Vuex.Store({
 
   getters:{
     isLoggedIn: state => state.isLoggedIn,
+    errors: state => state.errors,
     sensorId: state => state.sensorId,
     user: state => state.user,
     accessToken: state => state.user.accessToken,
