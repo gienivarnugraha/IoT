@@ -29,7 +29,7 @@
                             <td>{{item.sensor3Name}}</td>
                             <td>{{item.sensor4Name}}</td>
                             <td>
-                                <button type="button" class="btn btn-outline-success" @click="modals('edit')"><span class="fa fa-pencil"></span></button>
+                                <button type="button" class="btn btn-outline-success" @click="modals('edit')">Edit</button>
                                 <button type="button" class="btn btn-outline-danger" @click="deleteProjects(item.projectId)">Delete</button>
                             </td>
                             <tr v-if="values && values!=0">
