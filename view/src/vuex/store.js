@@ -53,7 +53,6 @@ export default new Vuex.Store({
           commit('loading', true);
           axios.post('/login', loginData)
           .then(response => {
-            console.log(response)
             commit('loading', false)
             commit('loginSuccess', response.data)
             commit('updateAccessToken', response.data.key)

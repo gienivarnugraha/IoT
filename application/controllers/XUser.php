@@ -1,13 +1,6 @@
 <?php if(!defined('BASEPATH')) exit('No direct script access allowed');
 
-require APPPATH . '/controllers/Api.php';
-
-use Restserver\Libraries\REST_Controller;
-
-header("Access-Control-Allow-Origin: http://localhost:8081");
-header("Access-Control-Allow-Headers: Authorization, Content-Type, Origin");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
-header("Access-Control-Allow-Credentials: true");
+require APPPATH . '/libraries/BaseController.php';
 
 /**
  * Class : User (UserController)
@@ -16,7 +9,7 @@ header("Access-Control-Allow-Credentials: true");
  * @version : 1.1
  * @since : 15 November 2016
  */
-class User extends Api
+class User extends BaseController
 {
     /**
      * This is default constructor of the class
@@ -24,41 +17,86 @@ class User extends Api
     public function __construct()
     {
         parent::__construct();
-        $this->setHeader();
-        $this->isLoggedIn();  
+        $this->load->model('user_model');
+        $this->isLoggedIn();   
     }
     
     /**
      * This function used to load the first screen of the user
      */
-    function index_get()
+    public function index()
     {
-        $userId = $this->uri->segment(3, 0);
-        //$userId = $this->global['userId'] ;
-        // If the id parameter doesn't exist return all the users
+        $this->global['pageTitle'] = 'IoT Platform : Dashboard';
+        
+        $this->loadViews("dashboard", $this->global, NULL , NULL);
+    }
+    
+    /**
+     * This function is used to load the user list
+     */
+    function userListing()
+    {
+        if($this->isAdmin() == TRUE)
+        {
+            $this->loadThis();
+        }
+        else
+        {
+            $this->load->model('user_model');
+        
+            $searchText = $this->input->post('searchText');
+            $data['searchText'] = $searchText;
+            
+            $this->load->library('pagination');
+            
+            $count = $this->user_model->userListingCount($searchText);
 
-        if ($userId!=0) {
-            $user = $this->user_model->userList($userId);
-        } else {
-            //$project = $this->project_model->projectList($id);
-            $user = $this->user_model->userList();
+			$returns = $this->paginationCompress ( "userListing/", $count, 5 );
+            
+            $data['userRecords'] = $this->user_model->userListing($searchText, $returns["page"], $returns["segment"]);
+            
+            $this->global['pageTitle'] = 'IoT Platform : User Listing';
+            
+            $this->loadViews("users", $this->global, $data, NULL);
         }
-        // Check if the users data store contains users (in case the database result returns NULL)
-        if (count($user) > 0) {
-            // Set the response and exit
-            return $this->response([
-                'status' => 200,
-                'columns' => array_keys($user[0]),
-                'items' => $user,
-                'count' => count($user),
-            ], 200); // OK (200) being the HTTP response code
-        } else {
-            // Set the response and exit
-            return $this->response([
-                'status' => false,
-                'message' => 'No user were found'
-            ], 200); // NOT_FOUND (404) being the HTTP response code
+    }
+
+    /**
+     * This function is used to load the add new form
+     */
+    function addNew()
+    {
+        if($this->isAdmin() == TRUE)
+        {
+            $this->loadThis();
         }
+        else
+        {
+            $this->load->model('user_model');
+            $data['roles'] = $this->user_model->getUserRoles();
+            
+            $this->global['pageTitle'] = 'IoT Platform : Add New User';
+
+            $this->loadViews("addNew", $this->global, $data, NULL);
+        }
+    }
+
+    /**
+     * This function is used to check whether email already exist or not
+     */
+    function checkEmailExists()
+    {
+        $userId = $this->input->post("userId");
+        $email = $this->input->post("email");
+
+        if(empty($userId)){
+            $result = $this->user_model->checkEmailExists($email);
+        } else {
+            $result = $this->user_model->checkEmailExists($email, $userId);
+        }
+
+        if(empty($result)){ echo("true"); }
+        else { echo("false"); }
     }
     
     /**
@@ -112,6 +150,34 @@ class User extends Api
             }
         }
     }
+
+    
+    /**
+     * This function is used load user edit information
+     * @param number $userId : Optional : This is user id
+     */
+    function editOld($userId = NULL)
+    {
+        if($this->isAdmin() == TRUE || $userId == 1)
+        {
+            $this->loadThis();
+        }
+        else
+        {
+            if($userId == null)
+            {
+                redirect('userListing');
+            }
+            
+            $data['roles'] = $this->user_model->getUserRoles();
+            $data['userInfo'] = $this->user_model->getUserInfo($userId);
+            
+            $this->global['pageTitle'] = 'CodeInsect : Edit User';
+            
+            $this->loadViews("editOld", $this->global, $data, NULL);
+        }
+    }
+    
     
     /**
      * This function is used to edit the user information
@@ -201,6 +267,17 @@ class User extends Api
     }
     
     /**
+     * This function is used to load the change password screen
+     */
+    function loadChangePass()
+    {
+        $this->global['pageTitle'] = 'CodeInsect : Change Password';
+        
+        $this->loadViews("changePassword", $this->global, NULL, NULL);
+    }
+    
+    
+    /**
      * This function is used to change the password of the user
      */
     function changePassword()
@@ -237,8 +314,16 @@ class User extends Api
                 if($result > 0) { $this->session->set_flashdata('success', 'Password updation successful'); }
                 else { $this->session->set_flashdata('error', 'Password updation failed'); }
                 
+                redirect('loadChangePass');
             }
         }
+    }
+
+    function pageNotFound()
+    {
+        $this->global['pageTitle'] = 'CodeInsect : 404 - Page Not Found';
+        
+        $this->loadViews("404", $this->global, NULL, NULL);
     }
 }
 

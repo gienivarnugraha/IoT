@@ -46,6 +46,7 @@ class Sensor extends Api
             // Set the response and exit
             return $this->response([
                 'status' => false,
+                'items' => 0,
                 'message' => 'No Sensors were found'
             ], 200); // NOT_FOUND (404) being the HTTP response code
         }

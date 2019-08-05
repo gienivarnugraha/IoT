@@ -54,7 +54,8 @@ class Project extends Api
             // Set the response and exit
             return $this->response([
                 'status' => false,
-                'message' => 'No project were found'
+                'items' => 0,
+                'message' => 'No project were found, please add one.'
             ], 200); // NOT_FOUND (404) being the HTTP response code
         }
     }
@@ -108,15 +109,19 @@ class Project extends Api
 
     function index_put()
     {
-        $id = $this->uri->segment(3, 0);
+        $id = $this->put('projectId');
         $project = $this->put();
+        $userId = $this->global['userId'] ;
+
+        var_dump($project);
+
         if ($id == null) {
             $message = [
                 'message' => 'Project ID not Found!'
             ];
             $this->response($message, REST_Controller::HTTP_BAD_REQUEST); // NO_CONTENT (204) being the HTTP response code
         } else {
-            $find = $this->project_model->projectList($id);
+            $find = $this->project_model->projectList($userId, $id);
             if ($find[0]['projectId'] == $id) {
                 $this->project_model->editProject($project, $id);
                 $message = [
@@ -170,6 +175,7 @@ class Project extends Api
         }
 
     }
+
     function sensor_get($id)
     {
         if (isset($id)) {
@@ -190,18 +196,4 @@ class Project extends Api
 
     }
 }
-/*      
-        fetchProject(){
-            axios
-                .get('/project')
-                .then(response=>{
-                    this.columns = response.data.columns
-                    this.items = response.data.items
-                })
-                .catch(err=>{
-                    console.log(err)
-                })
-        }, 
-        */ 
-
 ?>
