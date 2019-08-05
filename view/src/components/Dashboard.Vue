@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div v-if="sensor1.length!=0 || sensor2.length!=0 || sensor3.length!=0 || sensor4.length!=0" class="row">
                 <div v-if="loaded && sensor1.length!=0" :class="[sensor2.length!=0 ? 'col col-lg-6' : 'col col-lg-12']">
                     <chart id="sensor1" :chartData="collection1" :chartLabels="labels"></chart>
                 </div>
@@ -28,6 +28,11 @@
                     <chart id="sensor4" :chartData="collection4" :chartLabels="labels"></chart>
                 </div>
             </div>
+            
+            <div v-else class="row">
+                <p> No sensor value were found on database </p>
+            </div>
+
         </section>
     </div>
 </template>
@@ -61,14 +66,14 @@ export default {
             loaded:false,
             timeOut:setInterval(this.fillData,5000),
             sensorName:[],
-            //sensorId:''
+            loading:false,
         }
     }, 
     beforeDestroy() {
         clearInterval(this.timeOut)
     },
     beforeMount() {
-        //this.loading=true
+        this.loading=true
     },
     mounted() {
         this.fetchProjects().then(response=>{this.sensorName = response.data.items[0]})
@@ -78,6 +83,7 @@ export default {
             'fetchProjects'
         ]),
         changeFormat(param){
+            this.loading=true
             if (param == 1){
                 return this.format = dateToMin
             }
@@ -108,7 +114,8 @@ export default {
                                                     {
                                                     label: this.sensorName.sensor1Name,
                                                     data: this.sensor1,
-                                                    backgroundColor: '#ff6384'
+                                                    fill:false,
+                                                    borderColor: '#ff6384'
                                                     }
                                             ]
                         },
@@ -118,7 +125,8 @@ export default {
                                                     {
                                                     label: this.sensorName.sensor2Name,
                                                     data: this.sensor2,
-                                                    backgroundColor: '#36a2eb'
+                                                    fill:false,
+                                                    borderColor: '#36a2eb'
                                                     }
                                             ]
                         },
@@ -128,7 +136,8 @@ export default {
                                                     {
                                                     label: this.sensorName.sensor3Name,
                                                     data: this.sensor3,
-                                                    backgroundColor: '#cc65fe'
+                                                    fill:false,
+                                                    borderColor: '#cc65fe'
                                                     }
                                             ]
                         },
@@ -138,7 +147,8 @@ export default {
                                                     {
                                                     label: this.sensorName.sensor4Name,
                                                     data: this.sensor4,
-                                                    backgroundColor: '#ffce56'
+                                                    fill:false,
+                                                    borderColor: '#ffce56'
                                                     }
                                             ]
                         },

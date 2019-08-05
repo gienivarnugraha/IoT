@@ -234,11 +234,39 @@ export default {
         clearInterval(this.timeout)
     },
     mounted() {
-        this.fetchProjects()
+        this.fetchProjects().then(response=>{
+            console.log(response)
+            this.loading=false
+            if(response.data.items!=0 && response.data.count!=0 ){
+                this.items = response.data.items
+                this.sensorId = response.data.items[0].sensorId
+
+                this.form.projectId=response.data.items[0].projectId,
+                this.form.projectName=response.data.items[0].projectName,
+                this.form.projectDesc=response.data.items[0].projectDesc,
+                this.form.sensor1Name=response.data.items[0].sensor1Name,
+                this.form.sensor2Name=response.data.items[0].sensor2Name,
+                this.form.sensor3Name=response.data.items[0].sensor3Name,
+                this.form.sensor4Name=response.data.items[0].sensor4Name
+            }
+            else {
+                this.items=0
+                this.form.projectName='',
+                this.form.projectDesc='',
+                this.form.sensor1Name='',
+                this.form.sensor2Name='',
+                this.form.sensor3Name='',
+                this.form.sensor4Name=''
+            }
+            this.loaded=true
+        }).catch(error=>{
+            console.log(error)
+        })
     },
     methods: {
         ...mapActions([
-            'loading'
+            'loading',
+            'fetchProjects'
         ]),
         modals(select){
             if (select=="edit"){
@@ -247,45 +275,8 @@ export default {
                 this.addModal=true
             }
         },
-        fetchProjects() {
-            this.loading=true
-            return new Promise((resolve, reject)=>{
-                axios.get('/project')
-                .then(response => {
-                    console.log(response)
-                    this.loading=false
-                    if(response.data.items!=0 && response.data.count!=0 ){
-                        this.items = response.data.items
-                        this.sensorId = response.data.items[0].sensorId
-    
-                        this.form.projectId=response.data.items[0].projectId,
-                        this.form.projectName=response.data.items[0].projectName,
-                        this.form.projectDesc=response.data.items[0].projectDesc,
-                        this.form.sensor1Name=response.data.items[0].sensor1Name,
-                        this.form.sensor2Name=response.data.items[0].sensor2Name,
-                        this.form.sensor3Name=response.data.items[0].sensor3Name,
-                        this.form.sensor4Name=response.data.items[0].sensor4Name
-                    }
-                    else {
-                        this.items=0
-                        this.form.projectName='',
-                        this.form.projectDesc='',
-                        this.form.sensor1Name='',
-                        this.form.sensor2Name='',
-                        this.form.sensor3Name='',
-                        this.form.sensor4Name=''
-                    }
-                    this.loaded=true
-                    resolve(response)
-                })
-                .catch(error => {
-                    console.log(error)
-                    reject(error)
-                })
-            })
-        },
         editProjects() {
-            //this.loading=true
+            this.loading=true
             return new Promise((resolve, reject)=>{
                 axios.put('/project', this.form )
                 .then(response => {
@@ -297,22 +288,12 @@ export default {
                 })
                 .catch(error => {
                     if (error.response) {
-                        /*
-                        * The request was made and the server responded with a
-                        * status code that falls out of the range of 2xx
-                        */
                         console.log(error.response.data);
                         console.log(error.response.status);
                         console.log(error.response.headers);
                     } else if (error.request) {
-                        /*
-                        * The request was made but no response was received, `error.request`
-                        * is an instance of XMLHttpRequest in the browser and an instance
-                        * of http.ClientRequest in Node.js
-                        */
                         console.log(error.request);
                     } else {
-                        // Something happened in setting up the request and triggered an Error
                         console.log('Error', error.message);
                     }
                     console.log(error)
@@ -322,7 +303,7 @@ export default {
         },
         
         addProjects() {
-            //this.loading=true
+            this.loading=true
             var formData = new Form(this.form)
             console.log(formData)
             return new Promise((resolve, reject)=>{
@@ -360,7 +341,7 @@ export default {
             })
         },
         deleteProjects(id) {
-            //this.loading=true
+            this.loading=true
             return new Promise((resolve, reject)=>{
                 axios.delete('/project/id/'+id)
                 .then(response => {
