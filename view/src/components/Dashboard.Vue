@@ -31,7 +31,6 @@
             
             <div v-else class="row">
                 {{errors}}
-                <p> No sensor value were found on database </p>
             </div>
 
         </section>
@@ -78,11 +77,10 @@ export default {
         this.loading=true
     },
     mounted() {
+        this.errors= this.$store.getters.errors
+        console.log(this.$store.getters)
         this.fetchProjects().then(response=>{
-                console.log(response)
                 this.sensorName = response.data.items[0]
-            }).catch(error=>{
-                this.errors= this.$store.getters.errors
             })
     },
     methods: {
@@ -108,57 +106,62 @@ export default {
                         this.loading=false
                         console.log(response)
                         let results = response.data.items
+                        let status = response.data.status
                         this.items = response.data.items
-                        this.labelFormat(this.format)
-                        this.sensor1 = groupData(this.items, 1, this.format)
-                        this.sensor2 = groupData(this.items, 2, this.format)
-                        this.sensor3 = groupData(this.items, 3, this.format)
-                        this.sensor4 = groupData(this.items, 4, this.format)
+                        if (status==true){
+                            this.labelFormat(this.format)
+                            this.sensor1 = groupData(this.items, 1, this.format)
+                            this.sensor2 = groupData(this.items, 2, this.format)
+                            this.sensor3 = groupData(this.items, 3, this.format)
+                            this.sensor4 = groupData(this.items, 4, this.format)
 
-                        this.collection1 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor1Name,
-                                                    data: this.sensor1,
-                                                    fill:false,
-                                                    borderColor: '#ff6384'
-                                                    }
-                                            ]
-                        },
-                        this.collection2 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor2Name,
-                                                    data: this.sensor2,
-                                                    fill:false,
-                                                    borderColor: '#36a2eb'
-                                                    }
-                                            ]
-                        },
-                        this.collection3 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor3Name,
-                                                    data: this.sensor3,
-                                                    fill:false,
-                                                    borderColor: '#cc65fe'
-                                                    }
-                                            ]
-                        },
-                        this.collection4 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor4Name,
-                                                    data: this.sensor4,
-                                                    fill:false,
-                                                    borderColor: '#ffce56'
-                                                    }
-                                            ]
-                        },
+                            this.collection1 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor1Name,
+                                                        data: this.sensor1,
+                                                        fill:false,
+                                                        borderColor: '#ff6384'
+                                                        }
+                                                ]
+                            }
+                            this.collection2 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor2Name,
+                                                        data: this.sensor2,
+                                                        fill:false,
+                                                        borderColor: '#36a2eb'
+                                                        }
+                                                ]
+                            }
+                            this.collection3 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor3Name,
+                                                        data: this.sensor3,
+                                                        fill:false,
+                                                        borderColor: '#cc65fe'
+                                                        }
+                                                ]
+                            }
+                            this.collection4 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor4Name,
+                                                        data: this.sensor4,
+                                                        fill:false,
+                                                        borderColor: '#ffce56'
+                                                        }
+                                                ]
+                            }
+                        } else {
+                            this.errors = response.data.message
+                        }
                         this.loaded=true
                     })
                     .catch(error => {

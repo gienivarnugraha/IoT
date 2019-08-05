@@ -37,7 +37,7 @@ class Dashboard extends Api
         if (count($sensors) > 0) {
             // Set the response and exit
             return $this->response([
-                'status' => 200,
+                'status' => true,
                 'items' => $sensors,
                 'count' => count($sensors),
             ], 200); // OK (200) being the HTTP response code

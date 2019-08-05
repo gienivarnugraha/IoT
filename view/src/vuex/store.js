@@ -78,7 +78,7 @@ export default new Vuex.Store({
               commit('error', response.data.message)
             } else {
               if (localStorage.sensorId==null){
-                commit('getSensorId', response.data.items[0].sensorId)
+                commit('getSensorId', localStorage.getItem('sensorId'))
               } else {
                 commit('getSensorId', localStorage.getItem('sensorId'))
               }
@@ -119,9 +119,5 @@ export default new Vuex.Store({
     errors: state => state.errors,
     sensorId: state => state.sensorId,
     user: state => state.user,
-    accessToken: state => state.user.accessToken,
-    email: state => state.user.email,
-    userId: state => state.user.userId,
-    name: state => state.user.name,
   }
 })

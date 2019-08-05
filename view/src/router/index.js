@@ -47,7 +47,7 @@ export default new Router({
       },
       {
         path: '/',
-        name: 'project',
+        name: 'root',
         component: Project,
         //beforeEnter: requireAuth
       },
