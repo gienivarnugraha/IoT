@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import router from '../router/'
 
 Vue.use(Vuex)
 
@@ -14,7 +15,7 @@ export default new Vuex.Store({
       userId: localStorage.userId,
       name: localStorage.name,
     },
-    sensorId: localStorage.sensorId,
+    sensorId: localStorage.getItem('sensorId'),
     loading: false,
     errors:null,
     loginError: null,
@@ -42,7 +43,7 @@ export default new Vuex.Store({
       state.user.accessToken= accessToken
     },
     getSensorId: (state, id )=> {
-      state.sensorId = localStorage.setItem('sensorId', id)
+      state.sensorId = id
     },
     error: (state, errorMessage )=> {
       state.errors = errorMessage
@@ -60,6 +61,8 @@ export default new Vuex.Store({
             commit('loading', false)
             commit('loginSuccess', response.data)
             commit('updateAccessToken', response.data.key)
+            location.reload()
+            router.push({path:'/project'})
             resolve(response)
           })
           .catch(error => {
@@ -74,11 +77,12 @@ export default new Vuex.Store({
         axios.get('/project')
         .then(response => {
           console.log(response)
+          commit('loading', false)
             if(response.data.items==0){
               commit('error', response.data.message)
             } else {
-              if (localStorage.sensorId==null){
-                commit('getSensorId', localStorage.getItem('sensorId'))
+              if (localStorage.getItem('sensorId')==null){
+                commit('getSensorId', response.data.items[0].sensorId)
               } else {
                 commit('getSensorId', localStorage.getItem('sensorId'))
               }
@@ -86,6 +90,7 @@ export default new Vuex.Store({
             resolve(response)
           })
           .catch(error => {
+            commit('loading', false)
             if (error.response) {
                 commit('error', error.response.data)
               } else if (error.request) {
@@ -103,12 +108,17 @@ export default new Vuex.Store({
       commit('logout')
       localStorage.clear()
       commit('loginStop', null)
+      location.reload()
+      router.push({path:'/login'})
     },
     loading({commit}, condition){
       commit('loading', condition)
     },
     fetchAccessToken({ commit }) {
       commit('updateAccessToken', localStorage.getItem('accessToken'))
+    },
+    fetchSensorId({ commit }) {
+      commit('getSensorId', localStorage.getItem('sensorId'))
     },
   },
 

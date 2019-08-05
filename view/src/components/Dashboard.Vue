@@ -78,7 +78,6 @@ export default {
     },
     mounted() {
         this.errors= this.$store.getters.errors
-        console.log(this.$store.getters)
         this.fetchProjects().then(response=>{
                 this.sensorName = response.data.items[0]
             })
@@ -104,6 +103,7 @@ export default {
                 axios.get('/dashboard/id/'+this.$store.getters.sensorId)
                     .then(response => {
                         this.loading=false
+                        console.log(localStorage)
                         console.log(response)
                         let results = response.data.items
                         let status = response.data.status
