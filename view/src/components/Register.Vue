@@ -8,7 +8,7 @@
             <div class="card-header">
                 Login {{form.email}} {{form.password}}
             </div>
-            <form id="form" @submit.prevent="loginSubmit">
+            <form id="form" @submit.prevent="register">
                 <span class="is-invalid"> {{errors}} </span>
                 <div class="card-body">
                     
@@ -48,11 +48,9 @@
 <script>
 import inputView from './widgets/inputView'
 import Form from '../lib/Form'
-import { mapState } from 'vuex'
-import { mapActions } from 'vuex'
 
 export default {
-    name: 'login',
+    name: 'register',
     components: {
         'input-view' : inputView
     },
@@ -66,13 +64,10 @@ export default {
                 password:'',
                 matchPassword: ''
             },
+            loading:false,
         }
     },
     computed: {
-        ...mapState([
-            'loading',
-            'loginError',
-        ]),
 /*         match: function() {
             if(this.password.value === this.matchPassword.value){
                 return true
@@ -82,19 +77,41 @@ export default {
         } */
     },
     methods: {
-        ...mapActions([
-            'register',
-        ]),
-        loginSubmit() {
-            var formdata = new Form(this.form)
-            this.register(formdata.data())
-                .then(()=>{
-                    this.$router.push('/')
+        register() {
+            //this.loading=true
+            var formData = new Form(this.form)
+            return new Promise((resolve, reject)=>{
+                axios.post('/register', formData.data() )
+                .then(response => {
+                    this.loading=false
+                    console.log(response)
+                    this.$router.go('/login')
+                    resolve(response)
                 })
-        },
-        isValid(){
-            console.log(this.form.errors.has())
-            console.log(this.form.errors.get())
+                .catch(error => {
+                    if (error.response) {
+                        /*
+                        * The request was made and the server responded with a
+                        * status code that falls out of the range of 2xx
+                        */
+                        console.log(error.response.data);
+                        console.log(error.response.status);
+                        console.log(error.response.headers);
+                    } else if (error.request) {
+                        /*
+                        * The request was made but no response was received, `error.request`
+                        * is an instance of XMLHttpRequest in the browser and an instance
+                        * of http.ClientRequest in Node.js
+                        */
+                        console.log(error.request);
+                    } else {
+                        // Something happened in setting up the request and triggered an Error
+                        console.log('Error', error.message);
+                    }
+                    console.log(error)
+                    reject(error)
+                })
+            })
         }
     },
 }

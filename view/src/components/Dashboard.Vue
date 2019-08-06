@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <div class="row">
+            <div v-if="sensor1.length!=0 || sensor2.length!=0 || sensor3.length!=0 || sensor4.length!=0" class="row">
                 <div v-if="loaded && sensor1.length!=0" :class="[sensor2.length!=0 ? 'col col-lg-6' : 'col col-lg-12']">
                     <chart id="sensor1" :chartData="collection1" :chartLabels="labels"></chart>
                 </div>
@@ -28,6 +28,11 @@
                     <chart id="sensor4" :chartData="collection4" :chartLabels="labels"></chart>
                 </div>
             </div>
+            
+            <div v-else class="row">
+                {{errors}}
+            </div>
+
         </section>
     </div>
 </template>
@@ -61,23 +66,28 @@ export default {
             loaded:false,
             timeOut:setInterval(this.fillData,5000),
             sensorName:[],
-            //sensorId:''
+            loading:false,
+            errors:null
         }
     }, 
     beforeDestroy() {
         clearInterval(this.timeOut)
     },
     beforeMount() {
-        //this.loading=true
+        this.loading=true
     },
     mounted() {
-        this.fetchProjects().then(response=>{this.sensorName = response.data.items[0]})
+        this.errors= this.$store.getters.errors
+        this.fetchProjects().then(response=>{
+                this.sensorName = response.data.items[0]
+            })
     },
     methods: {
         ...mapActions([
             'fetchProjects'
         ]),
         changeFormat(param){
+            this.loading=true
             if (param == 1){
                 return this.format = dateToMin
             }
@@ -93,58 +103,69 @@ export default {
                 axios.get('/dashboard/id/'+this.$store.getters.sensorId)
                     .then(response => {
                         this.loading=false
+                        console.log(localStorage)
                         console.log(response)
                         let results = response.data.items
+                        let status = response.data.status
                         this.items = response.data.items
-                        this.labelFormat(this.format)
-                        this.sensor1 = groupData(this.items, 1, this.format)
-                        this.sensor2 = groupData(this.items, 2, this.format)
-                        this.sensor3 = groupData(this.items, 3, this.format)
-                        this.sensor4 = groupData(this.items, 4, this.format)
+                        if (status==true){
+                            this.labelFormat(this.format)
+                            this.sensor1 = groupData(this.items, 1, this.format)
+                            this.sensor2 = groupData(this.items, 2, this.format)
+                            this.sensor3 = groupData(this.items, 3, this.format)
+                            this.sensor4 = groupData(this.items, 4, this.format)
 
-                        this.collection1 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor1Name,
-                                                    data: this.sensor1,
-                                                    backgroundColor: '#ff6384'
-                                                    }
-                                            ]
-                        },
-                        this.collection2 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor2Name,
-                                                    data: this.sensor2,
-                                                    backgroundColor: '#36a2eb'
-                                                    }
-                                            ]
-                        },
-                        this.collection3 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor3Name,
-                                                    data: this.sensor3,
-                                                    backgroundColor: '#cc65fe'
-                                                    }
-                                            ]
-                        },
-                        this.collection4 = {
-                                            labels: this.labels,
-                                            datasets: [
-                                                    {
-                                                    label: this.sensorName.sensor4Name,
-                                                    data: this.sensor4,
-                                                    backgroundColor: '#ffce56'
-                                                    }
-                                            ]
-                        },
+                            this.collection1 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor1Name,
+                                                        data: this.sensor1,
+                                                        fill:false,
+                                                        borderColor: '#ff6384'
+                                                        }
+                                                ]
+                            }
+                            this.collection2 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor2Name,
+                                                        data: this.sensor2,
+                                                        fill:false,
+                                                        borderColor: '#36a2eb'
+                                                        }
+                                                ]
+                            }
+                            this.collection3 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor3Name,
+                                                        data: this.sensor3,
+                                                        fill:false,
+                                                        borderColor: '#cc65fe'
+                                                        }
+                                                ]
+                            }
+                            this.collection4 = {
+                                                labels: this.labels,
+                                                datasets: [
+                                                        {
+                                                        label: this.sensorName.sensor4Name,
+                                                        data: this.sensor4,
+                                                        fill:false,
+                                                        borderColor: '#ffce56'
+                                                        }
+                                                ]
+                            }
+                        } else {
+                            this.errors = response.data.message
+                        }
                         this.loaded=true
                     })
                     .catch(error => {
+                        this.loading=false
                         console.log(error)
                     })
             })

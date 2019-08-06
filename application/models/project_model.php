@@ -12,35 +12,13 @@ class Project_model extends CI_Model
     //function projectList($searchText = '', $page, $segment)
     function projectList($userId, $projectId=null )
     {
-        //$this->db->select('projectId, projectName, projectDesc, sensorId, sensor1Name, sensor1Value, sensor2Name,sensor2Value,sensor3Name,sensor3Value,sensor4Name,sensor4Value, max(dateTime)');
-        //$this->db->group_by('sensorId');  
-        //$this->db->select('BaseTbl.projectId, BaseTbl.projectName, BaseTbl.projectDesc, User.name');
-        //$this->db->from('tbl_project as BaseTbl');
-        //$this->db->join('tbl_users as User', 'User.userId = BaseTbl.userId','left');
-/*         if(!empty($searchText)) {
-            $likeCriteria = "(BaseTbl.email  LIKE '%".$searchText."%'
-                            OR  BaseTbl.name  LIKE '%".$searchText."%'
-                            OR  BaseTbl.mobile  LIKE '%".$searchText."%')";
-            $this->db->where($likeCriteria);
-        }
-        $this->db->where('BaseTbl.isDeleted', 0);
-        $this->db->where('BaseTbl.roleId !=', 1); 
-        $this->db->limit($page, $segment);
-        sensor1Name, 
-        sensor1Value, 
-        sensor2Name, 
-        sensor2Value, 
-        sensor3Name,
-        sensor3Value,
-        sensor4Name, 
-        sensor4Value, 
-        dateTime*/
         if($projectId!=null){
             $this->db->select('*');
             $this->db->where('projectId', $projectId);
         } else {
             $this->db->select('
-                                projectId,
+                                apiKey,
+                                projectId, 
                                 projectName, 
                                 projectDesc,
                                 sensorId, 
@@ -66,7 +44,7 @@ class Project_model extends CI_Model
         $this->db->insert('tbl_project', $project);
         $this->db->trans_complete();
 
-        return true;
+        return $this->db->trans_status();
     }
     
     /**
@@ -100,7 +78,11 @@ class Project_model extends CI_Model
         $this->db->where('sensorId', $id);
         $query = $this->db->get();
         $count = $query->num_rows();
-        return $query->result_array()[$count-1];
+        if ($count > 0){
+            return $query->result_array()[$count-1];
+        } else {
+            return $query->result_array();
+        }
     }
 
 }

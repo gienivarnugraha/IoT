@@ -96,11 +96,9 @@ class User_model extends CI_Model
         $this->db->trans_start();
         $this->db->insert('tbl_users', $userInfo);
         
-        $insert_id = $this->db->insert_id();
-        
         $this->db->trans_complete();
-        
-        return $insert_id;
+
+        return $this->db->trans_status();
     }
     
     /**

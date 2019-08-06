@@ -85,8 +85,7 @@ export default {
             this.doLogin(formdata.data())
                 .then(()=>{
                     this.loading(false)
-                    this.$router.push('/')
-                    this.fetchProjects()
+                    this.$router.push('/project')
                 })
                 .catch((error)=>{
                     console.log(error)
