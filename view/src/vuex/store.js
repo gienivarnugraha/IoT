@@ -70,6 +70,7 @@ export default new Vuex.Store({
       return new Promise((resolve, reject)=>{
         axios.get('/project')
         .then(response => {
+          console.log(response)
             if (localStorage.sensorId==null){
               commit('getSensorId', response.data.items[0].sensorId)
             } else {

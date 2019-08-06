@@ -3,7 +3,7 @@ if(!defined('BASEPATH')) exit('No direct script access allowed');
 
 require APPPATH . '/libraries/BaseController.php';
 
-header("Access-Control-Allow-Origin: http://localhost:8081");
+header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Access-Control-Allow-Headers: Authorization, Content-Type, Origin");
 header("Access-Control-Allow-Methods: POST");
 header("Access-Control-Allow-Credentials: true");

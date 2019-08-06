@@ -5,7 +5,7 @@ require APPPATH . '/controllers/Api.php';
 
 use Restserver\Libraries\REST_Controller;
 
-header("Access-Control-Allow-Origin: http://localhost:8081");
+header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Access-Control-Allow-Headers: Authorization, Content-Type, Origin");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
 header("Access-Control-Allow-Credentials: true");

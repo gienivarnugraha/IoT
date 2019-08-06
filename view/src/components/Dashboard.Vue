@@ -90,7 +90,7 @@ export default {
         },
         fillData () {
             return new Promise((resolve,reject)=>{
-                axios.get('/dashboard/id/'+this.$store.state.sensorId)
+                axios.get('/dashboard/id/'+this.$store.getters.sensorId)
                     .then(response => {
                         this.loading=false
                         console.log(response)

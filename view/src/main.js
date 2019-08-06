@@ -13,7 +13,7 @@ Vue.config.productionTip = false
 
 window.axios = axios
 
-axios.defaults.baseURL = 'http://localhost:8080/iot/'
+axios.defaults.baseURL = 'http://localhost/IoT/'
 axios.defaults.withCredentials = true
 const accessToken = localStorage.getItem('accessToken')
 console.log(accessToken)
