@@ -10,7 +10,7 @@ class Login_model extends CI_Model
      */
     function loginMe($email, $password)
     {
-        $this->db->select('BaseTbl.userId, BaseTbl.email,BaseTbl.password, BaseTbl.name, BaseTbl.roleId ');
+        $this->db->select('BaseTbl.userId, BaseTbl.email,BaseTbl.password, BaseTbl.name');
         $this->db->from('tbl_users as BaseTbl');
         $this->db->where('BaseTbl.email', $email);
         $query = $this->db->get();
@@ -52,7 +52,7 @@ class Login_model extends CI_Model
      * @param {array} $data : This is reset password data
      * @return {boolean} $result : TRUE/FALSE
      */
-    function resetPasswordUser($data)
+/*    function resetPasswordUser($data)
     {
         $result = $this->db->insert('tbl_reset_password', $data);
 
@@ -61,14 +61,14 @@ class Login_model extends CI_Model
         } else {
             return FALSE;
         }
-    }
+    }*/
 
     /**
      * This function is used to get customer information by email-id for forget password email
      * @param string $email : Email id of customer
      * @return object $result : Information of customer
      */
-    function getCustomerInfoByEmail($email)
+/*    function getCustomerInfoByEmail($email)
     {
         $this->db->select('userId, email, name');
         $this->db->from('tbl_users');
@@ -78,13 +78,13 @@ class Login_model extends CI_Model
 
         return $query->result();
     }
-
+*/
     /**
      * This function used to check correct activation deatails for forget password.
      * @param string $email : Email id of user
      * @param string $activation_id : This is activation string
      */
-    function checkActivationDetails($email, $activation_id)
+/*    function checkActivationDetails($email, $activation_id)
     {
         $this->db->select('userId');
         $this->db->from('tbl_reset_password');
@@ -92,7 +92,7 @@ class Login_model extends CI_Model
         $this->db->where('activation_id', $activation_id);
         $query = $this->db->get();
         return $query->num_rows();
-    }
+    }*/
 
     // This function used to create new password by reset link
     function createPasswordUser($email, $password)

@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.8.5
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2019 at 03:20 PM
--- Server version: 10.1.29-MariaDB
--- PHP Version: 7.2.0
+-- Generation Time: Aug 14, 2019 at 12:49 AM
+-- Server version: 10.1.38-MariaDB
+-- PHP Version: 7.3.3
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -46,7 +46,7 @@ CREATE TABLE `sensor` (
 ,`projectName` varchar(32)
 ,`userId` varchar(32)
 ,`projectDesc` varchar(32)
-,`sensorId` varchar(32)
+,`topic` varchar(32)
 ,`sensor1Name` varchar(32)
 ,`sensor1Value` int(32)
 ,`sensor2Name` varchar(32)
@@ -69,8 +69,8 @@ CREATE TABLE `tbl_project` (
   `userId` varchar(32) NOT NULL,
   `projectName` varchar(32) NOT NULL,
   `projectDesc` varchar(32) NOT NULL,
-  `apiKey` varchar(32) NOT NULL,
-  `sensorId` varchar(32) NOT NULL,
+  `apiKey` varchar(40) NOT NULL,
+  `topic` varchar(32) NOT NULL,
   `sensor1Name` varchar(32) NOT NULL DEFAULT 'none',
   `sensor2Name` varchar(32) NOT NULL DEFAULT 'none',
   `sensor3Name` varchar(32) NOT NULL DEFAULT 'none',
@@ -83,8 +83,9 @@ CREATE TABLE `tbl_project` (
 -- Dumping data for table `tbl_project`
 --
 
-INSERT INTO `tbl_project` (`projectId`, `userId`, `projectName`, `projectDesc`, `apiKey`, `sensorId`, `sensor1Name`, `sensor2Name`, `sensor3Name`, `sensor4Name`, `updateDate`, `createDate`) VALUES
-('id_5d3712f22d648', '1', 'vnbvbnvn', 'dsasdasdsa', 'gw00kk0c0s8g80cs480gwg4wo04sk4ss', 'id_5d3718f8422d6', 'asd', 'none', 'none', 'none', '2019-08-02 14:24:25', '2019-07-23 21:00:18');
+INSERT INTO `tbl_project` (`projectId`, `userId`, `projectName`, `projectDesc`, `apiKey`, `topic`, `sensor1Name`, `sensor2Name`, `sensor3Name`, `sensor4Name`, `updateDate`, `createDate`) VALUES
+('id_5d3712f22d648', '1', 'bangkai', 'huihuihui', 'gw00kk0c0s8g80cs480gwg4wo04sk4ss', 'topic_5d3718f8422d6', 'sensor1', 'sensor2', 'sensor3', 'sensor4', '2019-08-13 20:16:47', '2019-07-23 21:00:18'),
+('id_5d49865732593', 'id_5d497ebd35e7f', 'DHT', 'ini adalah project iot untuk men', '0w0kwc4s4s4k8gos88oc4cwokw4s48o0', 'topic_5d49865732774', 'Temperature', 'Humidity', '', '', '2019-08-14 05:49:15', '2019-08-06 20:53:27');
 
 -- --------------------------------------------------------
 
@@ -112,7 +113,7 @@ CREATE TABLE `tbl_reset_password` (
 --
 
 CREATE TABLE `tbl_sensor` (
-  `sensorId` varchar(32) NOT NULL,
+  `topic` varchar(32) NOT NULL,
   `sensor1Value` int(32) NOT NULL DEFAULT '0',
   `sensor2Value` int(32) NOT NULL DEFAULT '0',
   `sensor3Value` int(32) NOT NULL DEFAULT '0',
@@ -124,20 +125,25 @@ CREATE TABLE `tbl_sensor` (
 -- Dumping data for table `tbl_sensor`
 --
 
-INSERT INTO `tbl_sensor` (`sensorId`, `sensor1Value`, `sensor2Value`, `sensor3Value`, `sensor4Value`, `dateTime`) VALUES
-('id_5d3718f8422d6', 12, 23, 32, 13, '2019-07-30 07:21:39'),
-('id_5d3718f8422d6', 43, 32, 23, 12, '2019-07-30 07:21:39'),
-('id_5d3718f8422d6', 23, 23, 21, 21, '2019-07-30 07:21:57'),
-('id_5d3718f8422d6', 43, 4, 4, 4, '2019-07-30 07:22:34'),
-('id_5d3718f8422d6', 300, 300, 300, 300, '2019-07-30 07:27:09'),
-('id_5d3718f8422d6', 10, 20, 30, 20, '2019-07-30 07:55:18'),
-('id_5d3718f8422d6', 120, 100, 50, 200, '2019-07-30 07:55:46'),
-('id_5d3718f8422d6', 50, 50, 50, 50, '2019-07-31 13:45:26'),
-('id_5d3718f8422d6', 70, 70, 70, 70, '2019-07-31 15:54:35'),
-('id_5d3718f8422d6', 300, 300, 300, 300, '2019-07-31 15:58:06'),
-('id_5d3718f8422d6', 10, 10, 10, 10, '2019-07-31 16:00:46'),
-('id_5d3718f8422d6', 100, 200, 300, 400, '2019-08-01 07:23:45'),
-('id_5d3718f8422d6', 24, 85, 35, 56, '2019-08-02 13:03:24');
+INSERT INTO `tbl_sensor` (`topic`, `sensor1Value`, `sensor2Value`, `sensor3Value`, `sensor4Value`, `dateTime`) VALUES
+('topic_5d3718f8422d6', 12, 23, 32, 13, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 43, 32, 23, 12, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 23, 23, 21, 21, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 43, 4, 4, 4, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 300, 300, 300, 300, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 10, 20, 30, 20, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 120, 100, 50, 200, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 50, 50, 50, 50, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 70, 70, 70, 70, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 300, 300, 300, 300, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 10, 10, 10, 10, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 100, 200, 300, 400, '2019-08-13 13:13:15'),
+('topic_5d3718f8422d6', 60, 70, 80, 90, '2019-08-13 13:43:44'),
+('topic_5d3718f8422d6', 90, 80, 70, 60, '2019-08-13 13:44:47'),
+('topic_5d3718f8422d6', 100, 120, 130, 150, '2019-08-13 13:45:27'),
+('topic_5d3718f8422d6', 200, 210, 220, 230, '2019-08-13 14:00:00'),
+('topic_5d3718f8422d6', 100, 100, 100, 100, '2019-08-13 17:00:00'),
+('topic_5d52c74241570', 100, 100, 100, 100, '2019-08-13 17:00:00');
 
 -- --------------------------------------------------------
 
@@ -150,21 +156,18 @@ CREATE TABLE `tbl_users` (
   `email` varchar(128) NOT NULL COMMENT 'login email',
   `password` varchar(128) NOT NULL COMMENT 'hashed login password',
   `name` varchar(128) DEFAULT NULL COMMENT 'full name of user',
-  `mobile` varchar(20) DEFAULT NULL,
-  `roleId` tinyint(4) NOT NULL,
   `api_key` varchar(40) NOT NULL,
-  `createdBy` int(11) NOT NULL,
-  `createdDtm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `updatedBy` int(11) DEFAULT NULL,
-  `updatedDtm` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  `createdDtm` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `tbl_users`
 --
 
-INSERT INTO `tbl_users` (`userId`, `email`, `password`, `name`, `mobile`, `roleId`, `api_key`, `createdBy`, `createdDtm`, `updatedBy`, `updatedDtm`) VALUES
-('1', 'admin@admin.com', '$2y$10$SAvFim22ptA9gHVORtIaru1dn9rhgerJlJCPxRNA02MjQaJnkxawq', 'nivar', NULL, 1, 's4gw8ocokosog8o44kcwcs0sks8og8w4o40sckg8', 1, '2019-07-22 21:33:37', 1, '2019-08-02 10:23:37');
+INSERT INTO `tbl_users` (`userId`, `email`, `password`, `name`, `api_key`, `createdDtm`) VALUES
+('1', 'admin@admin.com', '$2y$10$SAvFim22ptA9gHVORtIaru1dn9rhgerJlJCPxRNA02MjQaJnkxawq', 'nivar', '8gggcwccsc4o04ccs4s8cc04s8sw40wwco4s0gw0', '2019-07-22 21:33:37'),
+('id_5d497ebd35e7f', 'dita@gmail.com', '$2y$10$FyazxMSRSobJTgtBgOLlQuF9DoOrh52gZQjHZy0ShrRONMeIRK62i', 'Dita', 'gsg4g00k8csss0oso0w8w4ow0ogo80g0kggk88oc', '2019-08-06 20:21:02'),
+('id_5d52c72259aa3', 'asd@asd', '$2y$10$btnl7soBQ1bhsy1BLAiZJO3BfOnGYt2Q28RPNUV3y3i2FGPfCjMx.', 'Udara', '0kgwo4g8o4sskow0g0w40owwkg0wgwo04cwcgcgs', '2019-08-13 21:20:18');
 
 -- --------------------------------------------------------
 
@@ -173,7 +176,7 @@ INSERT INTO `tbl_users` (`userId`, `email`, `password`, `name`, `mobile`, `roleI
 --
 DROP TABLE IF EXISTS `sensor`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `sensor`  AS  select `tbl_project`.`projectId` AS `projectId`,`tbl_project`.`projectName` AS `projectName`,`tbl_project`.`userId` AS `userId`,`tbl_project`.`projectDesc` AS `projectDesc`,`tbl_project`.`sensorId` AS `sensorId`,`tbl_project`.`sensor1Name` AS `sensor1Name`,`tbl_sensor`.`sensor1Value` AS `sensor1Value`,`tbl_project`.`sensor2Name` AS `sensor2Name`,`tbl_sensor`.`sensor2Value` AS `sensor2Value`,`tbl_project`.`sensor3Name` AS `sensor3Name`,`tbl_sensor`.`sensor3Value` AS `sensor3Value`,`tbl_project`.`sensor4Name` AS `sensor4Name`,`tbl_sensor`.`sensor4Value` AS `sensor4Value`,`tbl_sensor`.`dateTime` AS `dateTime` from (`tbl_project` join `tbl_sensor` on((`tbl_sensor`.`sensorId` = `tbl_project`.`sensorId`))) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `sensor`  AS  select `tbl_project`.`projectId` AS `projectId`,`tbl_project`.`projectName` AS `projectName`,`tbl_project`.`userId` AS `userId`,`tbl_project`.`projectDesc` AS `projectDesc`,`tbl_project`.`topic` AS `topic`,`tbl_project`.`sensor1Name` AS `sensor1Name`,`tbl_sensor`.`sensor1Value` AS `sensor1Value`,`tbl_project`.`sensor2Name` AS `sensor2Name`,`tbl_sensor`.`sensor2Value` AS `sensor2Value`,`tbl_project`.`sensor3Name` AS `sensor3Name`,`tbl_sensor`.`sensor3Value` AS `sensor3Value`,`tbl_project`.`sensor4Name` AS `sensor4Name`,`tbl_sensor`.`sensor4Value` AS `sensor4Value`,`tbl_sensor`.`dateTime` AS `dateTime` from (`tbl_project` join `tbl_sensor` on((`tbl_sensor`.`topic` = `tbl_project`.`topic`))) ;
 
 --
 -- Indexes for dumped tables
@@ -196,8 +199,8 @@ ALTER TABLE `tbl_reset_password`
 -- Indexes for table `tbl_sensor`
 --
 ALTER TABLE `tbl_sensor`
-  ADD KEY `sensorId` (`sensorId`),
-  ADD KEY `sensorId_2` (`sensorId`);
+  ADD KEY `sensorId` (`topic`),
+  ADD KEY `sensorId_2` (`topic`);
 
 --
 -- Indexes for table `tbl_users`

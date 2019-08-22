@@ -6,6 +6,11 @@
         <section class="content">
             <div class="row">
                 <div class="col align-self-center">
+                    <button type="button" class="btn btn-secondary" @click=download>Download</button>
+                </div>
+            </div>            
+            <div class="row">
+                <div class="col align-self-center">
                     <div class="btn-group">
                         <button type="button" class="btn btn-secondary" @click=changeFormat(1)>1 Min</button>
                         <button type="button" class="btn btn-secondary" @click=changeFormat(2)>1 Hour</button>
@@ -29,7 +34,7 @@
                 </div>
             </div>
             
-            <div v-else class="row">
+            <div v-if="errors" class="row">
                 {{errors}}
             </div>
 
@@ -79,7 +84,16 @@ export default {
     mounted() {
         this.errors= this.$store.getters.errors
         this.fetchProjects().then(response=>{
+            if (response.data.items!=0){
                 this.sensorName = response.data.items[0]
+            } else {
+                this.loading=false
+                this.errors = response.data.message
+                this.loaded=false
+                clearInterval(this.timeOut)
+            }
+            }).catch(err=>{
+                this.errors = response.data.message
             })
     },
     methods: {
@@ -100,10 +114,9 @@ export default {
         },
         fillData () {
             return new Promise((resolve,reject)=>{
-                axios.get('/dashboard/id/'+this.$store.getters.sensorId)
+                axios.get('/dashboard/id/'+this.$store.getters.topic)
                     .then(response => {
                         this.loading=false
-                        console.log(localStorage)
                         console.log(response)
                         let results = response.data.items
                         let status = response.data.status
@@ -114,6 +127,7 @@ export default {
                             this.sensor2 = groupData(this.items, 2, this.format)
                             this.sensor3 = groupData(this.items, 3, this.format)
                             this.sensor4 = groupData(this.items, 4, this.format)
+                            console.log(this.sensor1)
 
                             this.collection1 = {
                                                 labels: this.labels,
@@ -174,6 +188,11 @@ export default {
             this.labels = this.items
                 .map(entry => format(entry.dateTime))
                 .reduce(removeDuplicate, [])
+        },
+        download(){
+            axios.get('/download')
+                .then(response=> {console.log(response)})
+                .catch(err=> {console.log(err)})
         }
     }
 }

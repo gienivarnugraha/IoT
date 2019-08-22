@@ -16,6 +16,7 @@
                         <tr>
                             <th>Project Name</th>
                             <th>API key</th>
+                            <th>Topic</th>
                             <th>Sensor 1</th>
                             <th>Sensor 2</th>
                             <th>Sensor 3</th>
@@ -27,6 +28,7 @@
                         <tr v-for="(item) in items" :key="item.projectId" >
                             <td>{{item.projectName}}</td>
                             <td>{{item.apiKey}}</td>
+                            <td>{{item.topic}}</td>
                             <td>{{item.sensor1Name}}</td>
                             <td>{{item.sensor2Name}}</td>
                             <td>{{item.sensor3Name}}</td>
@@ -36,17 +38,17 @@
                                 <button type="button" class="btn btn-outline-danger" @click="deleteProjects(item.projectId)">Delete</button>
                             </td>
                             <tr v-if="values && values!=0">
-                                <td colspan=2>Values</td>
-                                <td v-for="(value) in values" :key="value.sensorId">{{value}}</td>
+                                <td colspan=3>Values</td>
+                                <td v-for="(value) in values" :key="value.topic">{{value}}</td>
                             </tr> 
                             <tr class="table-danger" v-else>
-                                <td colspan=7>Please connect the sensors to get the values</td>
+                                <td colspan=8>Please connect the sensors to get the values</td>
                             </tr>
                         </tr>
                     </tbody>
                     <tbody v-else>
                         <tr class="table-danger">
-                            <td colspan=6 >Please Add project by clicking button on the right! </td>
+                            <td colspan=7 >Please Add project by clicking button on the right! </td>
                             <td  >
                                 <button type="button" class="btn btn-success" @click="modals('add')">Add Project</button>
                             </td>
@@ -216,7 +218,7 @@ export default {
         return {
             items:[],
             values:[],
-            sensorId:'',
+            topic:'',
             errors:'',
             editModal: false,
             addModal: false,
@@ -251,7 +253,7 @@ export default {
                 this.loading=false
                 if(response.data.items!=0 && response.data.count!=0 ){
                     this.items = response.data.items
-                    this.sensorId = response.data.items[0].sensorId
+                    this.topic = response.data.items[0].topic
 
                     this.form.projectId=response.data.items[0].projectId,
                     this.form.projectName=response.data.items[0].projectName,
@@ -364,9 +366,9 @@ export default {
             })
         },
         fetchValues() {
-            if(this.items!=0 && this.sensorId!=null){
+            if(this.items!=0 && this.topic!=null){
                 return new Promise((resolve, reject)=>{
-                    axios.get('/sensor/id/'+this.sensorId)
+                    axios.get('/sensor/id/'+this.topic)
                     .then(response => {
                         console.log(response)
                         this.values = response.data.items

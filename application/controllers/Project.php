@@ -79,7 +79,7 @@ class Project extends Api
             'apiKey' => $this->_generate_key(),
             'projectName' => $projectName,
             'projectDesc' => $projectDesc,
-            'sensorId' => uniqid('id_'),
+            'topic' => uniqid('topic_'),
             'userId' => $this->userId,
             'sensor1Name' => $sensor1Name,
             'sensor2Name' => $sensor2Name,

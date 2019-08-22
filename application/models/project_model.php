@@ -21,7 +21,7 @@ class Project_model extends CI_Model
                                 projectId, 
                                 projectName, 
                                 projectDesc,
-                                sensorId, 
+                                topic, 
                                 sensor1Name, 
                                 sensor2Name, 
                                 sensor3Name,
@@ -75,7 +75,7 @@ class Project_model extends CI_Model
     {
         $this->db->select('sensor1Value,sensor2Value,sensor3Value,sensor4Value,dateTime');
         $this->db->from('tbl_sensor');
-        $this->db->where('sensorId', $id);
+        $this->db->where('topic', $id);
         $query = $this->db->get();
         $count = $query->num_rows();
         if ($count > 0){

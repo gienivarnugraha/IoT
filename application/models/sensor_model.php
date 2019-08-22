@@ -13,10 +13,21 @@ class Sensor_model extends CI_Model
     {
         $this->db->select('*');
         $this->db->from('tbl_sensor');
-        $this->db->where('sensorId', $id);
-        //$this->db->where('dateTime >= DATE_ADD(NOW(), INTERVAL -1 DAY) ');
+        $this->db->where('topic', $id);
+        //$this->db->where('dateTime >= DATE_ADD(NOW(), INTERVAL -5 DAY) ');
         $query = $this->db->get();
         return $query->result_array();
     }
+    
+    function download($id)
+    {
+        $this->db->select('*');
+        $this->db->from('tbl_sensor');
+        $this->db->where('topic', $id);
+        //$this->db->where('dateTime >= DATE_ADD(NOW(), INTERVAL -5 DAY) ');
+        $query = $this->db->get();
+        return $query->row();
+    }
+
 
 }

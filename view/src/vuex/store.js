@@ -15,7 +15,7 @@ export default new Vuex.Store({
       userId: localStorage.userId,
       name: localStorage.name,
     },
-    sensorId: localStorage.getItem('sensorId'),
+    topic: localStorage.topic,
     loading: false,
     errors:null,
     loginError: null,
@@ -42,8 +42,11 @@ export default new Vuex.Store({
     updateAccessToken: (state, accessToken) => {
       state.user.accessToken= accessToken
     },
-    getSensorId: (state, id )=> {
-      state.sensorId = id
+    getTopic: (state, id )=> {
+      state.topic = id
+    },
+    setTopic: (state, id )=> {
+      state.topic = localStorage.setItem('topic',id)
     },
     error: (state, errorMessage )=> {
       state.errors = errorMessage
@@ -81,10 +84,10 @@ export default new Vuex.Store({
             if(response.data.items==0){
               commit('error', response.data.message)
             } else {
-              if (localStorage.getItem('sensorId')==null){
-                commit('getSensorId', response.data.items[0].sensorId)
+              if (localStorage.topic==null){
+                commit('setTopic', response.data.items[0].topic)
               } else {
-                commit('getSensorId', localStorage.getItem('sensorId'))
+                commit('getTopic', localStorage.topic)
               }
             }
             resolve(response)
@@ -117,8 +120,8 @@ export default new Vuex.Store({
     fetchAccessToken({ commit }) {
       commit('updateAccessToken', localStorage.getItem('accessToken'))
     },
-    fetchSensorId({ commit }) {
-      commit('getSensorId', localStorage.getItem('sensorId'))
+    fetchtopic({ commit }) {
+      commit('getTopic', localStorage.getItem('topic'))
     },
   },
 
@@ -127,7 +130,7 @@ export default new Vuex.Store({
   getters:{
     isLoggedIn: state => state.isLoggedIn,
     errors: state => state.errors,
-    sensorId: state => state.sensorId,
+    topic: state => state.topic,
     user: state => state.user,
   }
 })

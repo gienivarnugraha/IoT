@@ -48,9 +48,9 @@
 $active_group = 'default';
 $active_record = TRUE;
 
-$db['default']['hostname'] = '192.168.43.225';
+$db['default']['hostname'] = 'localhost';
 $db['default']['username'] = 'root';
-$db['default']['password'] = 'iot';
+$db['default']['password'] = '';
 $db['default']['database'] = 'cias';
 $db['default']['dbdriver'] = 'mysqli';
 $db['default']['dbprefix'] = '';
